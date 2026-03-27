@@ -1,56 +1,16 @@
 {
   "project_id": "2a1a76d9-c55d-48fc-b07b-0625bc1039a4",
   "project_name": "MCP-Healthcare CDS Server",
-  "project_slug": "7a136024eee5",
   "team_id": "488a02b5-c546-4242-95fb-bf6caf038fa1",
   "team_key": "M2A",
-  "team_name": "M2AI_Workspace",
-  "initialized": true,
-  "created_at": "2026-03-27T19:33:10.101Z",
-  "status": "awaiting_issue_creation",
-  "note": "Project created successfully. Issue creation blocked by Cloudflare. Retry needed.",
-  "issues_to_create": [
-    {
-      "order": 1,
-      "title": "Project Setup and Core Architecture",
-      "priority": "high",
-      "description": "Set up the Python project structure, configuration management, and database layer.\n\n## Requirements\n- Create Python package structure (mcp_healthcare/)\n- Implement Pydantic config manager for MCP_DATA_DIR, MCP_DB_NAME, MCP_LOG_LEVEL, MCP_AUDIT_ENABLE\n- Initialize SQLite database with WAL mode\n- Create audit_log table (ts INTEGER PRIMARY KEY, user_id TEXT, query_hash TEXT, response_summary TEXT)\n- Create Click CLI entrypoint with --help\n- Create Pydantic data models: MedicationInput, ObservationBundle, InteractionAlert, PathwayStep\n\n## Test Steps\n1. Run 'python -m pytest tests/test_config.py' - verifies config loading from env vars\n2. Run 'python -m pytest tests/test_db.py' - verifies database initialization and audit table creation\n3. Run 'mcp-healthcare --help' - prints usage info"
-    },
-    {
-      "order": 2,
-      "title": "Drug Interaction Checker",
-      "priority": "high",
-      "description": "Implement the drug interaction checking tool that evaluates medication lists against a curated interaction database.\n\n## Requirements\n- Accept JSON array of medication objects ({name, dose, route})\n- Reference interaction tables from MCP_DATA_DIR/interactions.sqlite\n- Output JSON list of interaction alerts with severity, description, source\n- Write audit record for every query (timestamp, user-id, query-hash, result-count)\n- CLI command: mcp-healthcare drug-check\n\n## Test Steps\n1. python -m pytest tests/test_drug_interaction.py::test_empty_list → expects []\n2. python -m pytest tests/test_drug_interaction.py::test_known_interaction → expects one alert with severity 'contraindication'\n3. python -m pytest tests/test_drug_interaction.py::test_audit_write → verifies new row in audit_log table"
-    },
-    {
-      "order": 3,
-      "title": "Diagnostic Criteria Evaluator",
-      "priority": "high",
-      "description": "Implement the diagnostic criteria evaluation tool that checks clinical observations against rule sets.\n\n## Requirements\n- Receive JSON observation bundle ({vitals, labs, history})\n- Load rule definitions from MCP_DATA_DIR/rulesets/<name>.json\n- Evaluate all required criteria; return {passed: bool, evidence: [string]}\n- Append audit entry for each evaluation\n- CLI command: mcp-healthcare diagnose\n\n## Test Steps\n1. python -m pytest tests/test_diagnostic.py::test_met_criteria → expects passed: true\n2. python -m pytest tests/test_diagnostic.py::test_missing_labs → expects passed: false with evidence listing missing lactate\n3. python -m pytest tests/test_diagnostic.py::test_audit → confirms audit row contains rule set name"
-    },
-    {
-      "order": 4,
-      "title": "Care Pathway Recommender",
-      "priority": "high",
-      "description": "Implement the care pathway recommendation tool that suggests ordered care actions.\n\n## Requirements\n- Accept {diagnosis: string, context: object}\n- Pick highest-priority pathway from MCP_DATA_DIR/pathways/<diagnosis>.json\n- Output JSON array of ordered steps with action, detail, estimated_hours\n- Log recommendation event to audit table\n- CLI command: mcp-healthcare recommend\n\n## Test Steps\n1. python -m pytest tests/test_pathway.py::test_known_diagnosis → returns non-empty ordered list\n2. python -m pytest tests/test_pathway.py::test_unsupported_diagnosis → returns empty list and logs warning\n3. python -m pytest tests/test_pathway.py::test_audit_integrity → checks audit entry includes recommendation count"
-    },
-    {
-      "order": 5,
-      "title": "Integration Testing and CLI Polish",
-      "priority": "high",
-      "description": "End-to-end integration tests and CLI polish for the complete MCP-Healthcare server.\n\n## Requirements\n- Integration test running all three CDS tools in sequence\n- Verify audit log completeness across all operations\n- Verify CLI help prints within 200ms\n- Verify no external network imports (requests, urllib, httpx, etc.)\n- Verify no more than 5 third-party pip packages\n- Polish CLI output formatting\n\n## Test Steps\n1. python -m pytest tests/test_integration.py::test_full_workflow → runs drug-check, diagnose, recommend in sequence\n2. python -m pytest tests/test_integration.py::test_audit_completeness → all operations logged\n3. python -m pytest tests/test_integration.py::test_no_network_imports → verifies offline operability\n4. python -m pytest tests/test_integration.py::test_startup_latency → CLI help under 200ms"
-    }
+  "meta_issue_id": "pending",
+  "total_issues": 5,
+  "issues": [
+    {"id": "pending", "title": "Project Setup and Core Architecture", "order": 1},
+    {"id": "pending", "title": "Drug Interaction Checker", "order": 2},
+    {"id": "pending", "title": "Diagnostic Criteria Evaluator", "order": 3},
+    {"id": "pending", "title": "Care Pathway Recommender", "order": 4},
+    {"id": "pending", "title": "Integration Testing and CLI Polish", "order": 5}
   ],
-  "meta_issue": {
-    "title": "[META] Project Progress Tracker",
-    "priority": "medium",
-    "description": "Session tracking issue for MCP-Healthcare CDS Server project.\n\nThis issue tracks progress across coding sessions. Each session adds a comment with:\n- What was accomplished\n- Current status of all features\n- What to work on next\n- Any blockers or notes"
-  },
-  "total_issues": 6,
-  "team_info": {
-    "id": "488a02b5-c546-4242-95fb-bf6caf038fa1",
-    "key": "M2A",
-    "name": "M2AI_Workspace",
-    "member": "matthew.snow2@gmail.com"
-  }
+  "note": "Linear issues pending creation due to API availability. Project and team created successfully."
 }

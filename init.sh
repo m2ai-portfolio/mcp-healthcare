@@ -48,9 +48,9 @@ if [ -f "$PROJECT_DIR/requirements.txt" ]; then
     pip install -r "$PROJECT_DIR/requirements.txt"
     echo "Installed from requirements.txt"
 else
-    # Install minimal dependencies
-    pip install click pydantic pytest sqlalchemy
-    echo "Installed core dependencies (click, pydantic, pytest, sqlalchemy)"
+    # Install minimal dependencies (no sqlalchemy - using built-in sqlite3)
+    pip install click pydantic pydantic-settings pytest
+    echo "Installed core dependencies (click, pydantic, pydantic-settings, pytest)"
 fi
 
 # Install package in editable mode if pyproject.toml exists
@@ -71,14 +71,14 @@ echo ""
 # Set default environment variables
 echo "Setting environment variables..."
 export MCP_DATA_DIR="$PROJECT_DIR/data"
-export MCP_DB_NAME="healthcare.db"
+export MCP_DB_NAME="mcp_hc.sqlite"
 export MCP_LOG_LEVEL="INFO"
-export MCP_AUDIT_LOG="$PROJECT_DIR/logs/audit.log"
+export MCP_AUDIT_ENABLE="true"
 
 echo "MCP_DATA_DIR=$MCP_DATA_DIR"
 echo "MCP_DB_NAME=$MCP_DB_NAME"
 echo "MCP_LOG_LEVEL=$MCP_LOG_LEVEL"
-echo "MCP_AUDIT_LOG=$MCP_AUDIT_LOG"
+echo "MCP_AUDIT_ENABLE=$MCP_AUDIT_ENABLE"
 echo ""
 
 # Run smoke tests
