@@ -17,7 +17,10 @@ dependencies = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["mcp_healthcare*"]
-exclude = ["tests*", "screenshots*", "data*", "logs*"]
+exclude = ["tests*", "screenshots*", "logs*"]
+
+[tool.setuptools.package-data]
+mcp_healthcare = ["data/*.json"]
 
 [project.optional-dependencies]
 dev = [

@@ -3,14 +3,38 @@
   "project_name": "MCP-Healthcare CDS Server",
   "team_id": "488a02b5-c546-4242-95fb-bf6caf038fa1",
   "team_key": "M2A",
-  "meta_issue_id": "pending",
+  "meta_issue_id": "M2A-521",
   "total_issues": 5,
   "issues": [
-    {"id": "pending", "title": "Project Setup and Core Architecture", "order": 1},
-    {"id": "pending", "title": "Drug Interaction Checker", "order": 2},
-    {"id": "pending", "title": "Diagnostic Criteria Evaluator", "order": 3},
-    {"id": "pending", "title": "Care Pathway Recommender", "order": 4},
-    {"id": "pending", "title": "Integration Testing and CLI Polish", "order": 5}
-  ],
-  "note": "Linear issues pending creation due to API availability. Project and team created successfully."
+    {
+      "id": "924516e6-a635-4f7f-bb51-57b71e09ad4e",
+      "identifier": "M2A-516",
+      "title": "Project Setup and Core Architecture",
+      "number": 516
+    },
+    {
+      "id": "6a383d79-53b0-487f-86af-2679a7e87f3a",
+      "identifier": "M2A-517",
+      "title": "Drug Interaction Checker",
+      "number": 517
+    },
+    {
+      "id": "43c9ee17-70ec-4a2a-a874-13c18b2a3b30",
+      "identifier": "M2A-518",
+      "title": "Diagnostic Criteria Evaluator",
+      "number": 518
+    },
+    {
+      "id": "9a876eac-5980-4b6f-9241-f85807fc6b18",
+      "identifier": "M2A-519",
+      "title": "Care Pathway Recommender",
+      "number": 519
+    },
+    {
+      "id": "17c3e343-7a7a-4f9a-9d87-41ca229a9608",
+      "identifier": "M2A-520",
+      "title": "Integration Testing and CLI Polish",
+      "number": 520
+    }
+  ]
 }

@@ -1,12 +1,15 @@
 """Click CLI entrypoint for MCP Healthcare."""
 
 import click
+import json
 import logging
 import sys
 
 from . import __version__
 from .config import get_settings
 from .db import init_database
+from .models import MedicationInput
+from .drug_checker import DrugInteractionChecker
 
 
 def setup_logging(level: str = "INFO") -> None:
@@ -116,6 +119,56 @@ def status(ctx):
             click.echo(f"  Schema Status: Error - {e}")
     else:
         click.echo("\n  Database Status: Not initialized (run 'mcp-healthcare init')")
+
+
+@main.command("drug-check")
+@click.option("--medications", "-m", required=True, help="JSON array of medication objects")
+@click.option("--user-id", "-u", default="cli-user", help="User ID for audit logging")
+@click.pass_context
+def drug_check(ctx, medications, user_id):
+    """Check drug interactions for a medication list.
+
+    Example:
+        mcp-healthcare drug-check -m '[{"name":"warfarin","dose":"5mg","route":"PO"},{"name":"aspirin","dose":"81mg","route":"PO"}]'
+    """
+    logger = ctx.obj["logger"]
+
+    try:
+        # Parse JSON input
+        medications_data = json.loads(medications)
+
+        # Validate that it's a list
+        if not isinstance(medications_data, list):
+            click.echo("Error: --medications must be a JSON array", err=True)
+            sys.exit(1)
+
+        # Create MedicationInput objects
+        med_objects = []
+        for med_data in medications_data:
+            try:
+                med = MedicationInput(**med_data)
+                med_objects.append(med)
+            except Exception as e:
+                click.echo(f"Error: Invalid medication data: {e}", err=True)
+                sys.exit(1)
+
+        # Initialize checker and run check
+        checker = DrugInteractionChecker()
+        alerts = checker.check_interactions(med_objects, user_id=user_id)
+
+        # Output results as JSON
+        output = [alert.model_dump() for alert in alerts]
+        click.echo(json.dumps(output, indent=2))
+
+        logger.info(f"Drug interaction check completed: {len(alerts)} alerts found")
+
+    except json.JSONDecodeError as e:
+        click.echo(f"Error: Invalid JSON format: {e}", err=True)
+        sys.exit(1)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        logger.error(f"Drug check failed: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
