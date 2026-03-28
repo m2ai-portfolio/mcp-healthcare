@@ -1,0 +1,44 @@
+[
+  {
+    "drug_a": "warfarin",
+    "drug_b": "aspirin",
+    "severity": "contraindication",
+    "description": "Concurrent use of warfarin and aspirin significantly increases the risk of major bleeding",
+    "source": "Stockley's Drug Interactions 12e"
+  },
+  {
+    "drug_a": "metformin",
+    "drug_b": "contrast dye",
+    "severity": "warning",
+    "description": "Metformin should be temporarily discontinued before iodinated contrast procedures due to risk of lactic acidosis",
+    "source": "FDA Safety Communication 2016"
+  },
+  {
+    "drug_a": "simvastatin",
+    "drug_b": "erythromycin",
+    "severity": "contraindication",
+    "description": "Erythromycin inhibits CYP3A4 metabolism of simvastatin, greatly increasing risk of rhabdomyolysis",
+    "source": "Micromedex"
+  },
+  {
+    "drug_a": "lisinopril",
+    "drug_b": "potassium",
+    "severity": "warning",
+    "description": "ACE inhibitors increase potassium retention; concurrent potassium supplementation may cause hyperkalemia",
+    "source": "Stockley's Drug Interactions 12e"
+  },
+  {
+    "drug_a": "fluoxetine",
+    "drug_b": "tramadol",
+    "severity": "warning",
+    "description": "Combined serotonergic activity increases risk of serotonin syndrome",
+    "source": "FDA Drug Safety Communication"
+  },
+  {
+    "drug_a": "ciprofloxacin",
+    "drug_b": "theophylline",
+    "severity": "precaution",
+    "description": "Ciprofloxacin inhibits theophylline metabolism, monitor theophylline levels closely",
+    "source": "Micromedex"
+  }
+]
