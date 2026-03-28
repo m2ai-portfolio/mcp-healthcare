@@ -1,0 +1,49 @@
+{
+  "name": "sepsis_sirs",
+  "description": "Sepsis SIRS (Systemic Inflammatory Response Syndrome) Criteria",
+  "criteria": {
+    "vitals": {
+      "temperature": {
+        "required": true,
+        "conditions": [
+          {"operator": ">", "value": 38.3},
+          {"operator": "<", "value": 36.0}
+        ],
+        "logic": "OR"
+      },
+      "heart_rate": {
+        "required": true,
+        "conditions": [
+          {"operator": ">", "value": 90}
+        ]
+      },
+      "respiratory_rate": {
+        "required": true,
+        "conditions": [
+          {"operator": ">", "value": 20}
+        ]
+      }
+    },
+    "labs": {
+      "lactate": {
+        "required": true,
+        "conditions": [
+          {"operator": ">", "value": 2.0}
+        ]
+      },
+      "wbc": {
+        "required": true,
+        "conditions": [
+          {"operator": ">", "value": 12000},
+          {"operator": "<", "value": 4000}
+        ],
+        "logic": "OR"
+      }
+    }
+  },
+  "evaluation": {
+    "type": "minimum_met",
+    "minimum_sirs_criteria": 2,
+    "note": "At least 2 of 4 SIRS criteria (temperature, heart_rate, respiratory_rate, wbc) must be met, plus lactate > 2.0 for sepsis"
+  }
+}

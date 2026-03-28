@@ -20,7 +20,7 @@ include = ["mcp_healthcare*"]
 exclude = ["tests*", "screenshots*", "logs*"]
 
 [tool.setuptools.package-data]
-mcp_healthcare = ["data/*.json"]
+mcp_healthcare = ["data/**/*.json"]
 
 [project.optional-dependencies]
 dev = [

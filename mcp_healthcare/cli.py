@@ -8,8 +8,9 @@ import sys
 from . import __version__
 from .config import get_settings
 from .db import init_database
-from .models import MedicationInput
+from .models import MedicationInput, ObservationBundle
 from .drug_checker import DrugInteractionChecker
+from .diagnostic import DiagnosticEvaluator
 
 
 def setup_logging(level: str = "INFO") -> None:
@@ -168,6 +169,53 @@ def drug_check(ctx, medications, user_id):
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         logger.error(f"Drug check failed: {e}")
+        sys.exit(1)
+
+
+@main.command("diagnose")
+@click.option("--observations", "-o", required=True, help="JSON observation bundle with vitals, labs, and history")
+@click.option("--ruleset", "-r", required=True, help="Name of diagnostic rule set (e.g., 'sepsis_sirs')")
+@click.option("--user-id", "-u", default="cli-user", help="User ID for audit logging")
+@click.pass_context
+def diagnose(ctx, observations, ruleset, user_id):
+    """Evaluate clinical observations against diagnostic criteria.
+
+    Example:
+        mcp-healthcare diagnose -o '{"vitals":{"temperature":39.0,"heart_rate":110},"labs":{"lactate":4.0},"history":[]}' -r sepsis_sirs
+    """
+    logger = ctx.obj["logger"]
+
+    try:
+        # Parse JSON input
+        obs_data = json.loads(observations)
+
+        # Validate that it's a dict with required keys
+        if not isinstance(obs_data, dict):
+            click.echo("Error: --observations must be a JSON object", err=True)
+            sys.exit(1)
+
+        # Create ObservationBundle object
+        try:
+            obs_bundle = ObservationBundle(**obs_data)
+        except Exception as e:
+            click.echo(f"Error: Invalid observation data: {e}", err=True)
+            sys.exit(1)
+
+        # Initialize evaluator and run evaluation
+        evaluator = DiagnosticEvaluator()
+        result = evaluator.evaluate(obs_bundle, ruleset, user_id=user_id)
+
+        # Output results as JSON
+        click.echo(json.dumps(result, indent=2))
+
+        logger.info(f"Diagnostic evaluation completed: passed={result['passed']}")
+
+    except json.JSONDecodeError as e:
+        click.echo(f"Error: Invalid JSON format: {e}", err=True)
+        sys.exit(1)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        logger.error(f"Diagnostic evaluation failed: {e}")
         sys.exit(1)
 
 
