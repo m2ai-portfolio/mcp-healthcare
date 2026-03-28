@@ -1,0 +1,33 @@
+{
+  "diagnosis": "pneumonia",
+  "description": "Community-Acquired Pneumonia (CAP) management pathway",
+  "source": "ATS/IDSA Guidelines 2019",
+  "priority": 1,
+  "steps": [
+    {
+      "action": "Obtain chest X-ray",
+      "detail": "PA and lateral views to confirm diagnosis and assess severity",
+      "estimated_hours": 1.0
+    },
+    {
+      "action": "Collect sputum culture",
+      "detail": "Before initiating antibiotics if possible; blood cultures x2 if severe",
+      "estimated_hours": 0.5
+    },
+    {
+      "action": "Administer antibiotic",
+      "detail": "Amoxicillin 1g PO TID for outpatient; Ceftriaxone 1g IV + Azithromycin 500mg IV for inpatient",
+      "estimated_hours": 0.25
+    },
+    {
+      "action": "Assess oxygenation",
+      "detail": "SpO2 monitoring; supplemental O2 if SpO2 < 94%",
+      "estimated_hours": 0.5
+    },
+    {
+      "action": "Schedule follow-up",
+      "detail": "Reassess in 48-72 hours; repeat imaging in 6 weeks if not improving",
+      "estimated_hours": 0.25
+    }
+  ]
+}

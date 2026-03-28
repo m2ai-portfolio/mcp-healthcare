@@ -11,6 +11,7 @@ from .db import init_database
 from .models import MedicationInput, ObservationBundle
 from .drug_checker import DrugInteractionChecker
 from .diagnostic import DiagnosticEvaluator
+from .pathway import CarePathwayRecommender
 
 
 def setup_logging(level: str = "INFO") -> None:
@@ -216,6 +217,47 @@ def diagnose(ctx, observations, ruleset, user_id):
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         logger.error(f"Diagnostic evaluation failed: {e}")
+        sys.exit(1)
+
+
+@main.command("recommend")
+@click.option("--diagnosis", "-d", required=True, help="Diagnosis name (e.g., 'pneumonia')")
+@click.option("--context", "-c", default="{}", help="Patient context as JSON object (optional)")
+@click.option("--user-id", "-u", default="cli-user", help="User ID for audit logging")
+@click.pass_context
+def recommend(ctx, diagnosis, context, user_id):
+    """Recommend care pathway steps for a diagnosis.
+
+    Example:
+        mcp-healthcare recommend -d pneumonia -c '{"age": 65, "comorbidities": ["COPD"]}'
+    """
+    logger = ctx.obj["logger"]
+
+    try:
+        # Parse JSON context
+        context_data = json.loads(context)
+
+        # Validate that it's a dict
+        if not isinstance(context_data, dict):
+            click.echo("Error: --context must be a JSON object", err=True)
+            sys.exit(1)
+
+        # Initialize recommender and get pathway
+        recommender = CarePathwayRecommender()
+        steps = recommender.recommend(diagnosis, context_data, user_id=user_id)
+
+        # Output results as JSON
+        output = [step.model_dump() for step in steps]
+        click.echo(json.dumps(output, indent=2))
+
+        logger.info(f"Pathway recommendation completed: {len(steps)} steps")
+
+    except json.JSONDecodeError as e:
+        click.echo(f"Error: Invalid JSON format: {e}", err=True)
+        sys.exit(1)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        logger.error(f"Pathway recommendation failed: {e}")
         sys.exit(1)
 
 

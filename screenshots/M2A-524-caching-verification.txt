@@ -1,0 +1,13 @@
+=== CACHING VERIFICATION ===
+
+Initialization (load all pathways): 0.64ms
+Cached pathways: ['pneumonia']
+
+Recommend calls (using cache):
+  Call 1: 12.11ms (5 steps)
+  Call 2: 4.92ms (5 steps)
+  Call 3: 5.10ms (5 steps)
+  Call 4: 4.89ms (5 steps)
+  Call 5: 5.05ms (5 steps)
+
+✓ All recommend() calls use cached data (no disk reads)
